@@ -43,7 +43,15 @@ final class EditorViewController: UIViewController, UIGestureRecognizerDelegate 
         self.editor = ImageEditor(image: image)
         self.completion = completion
 
-        super.init(nibName: nil, bundle: nil)
+        let frameworkBundle = Bundle(for: Self.self)
+        let bundleURL = frameworkBundle.resourceURL?.appendingPathComponent("Filestack.bundle")
+        let resourceBundle = Bundle(url: bundleURL!)
+        
+        #if SWIFT_PACKAGE
+        super.init(nibName: nil, bundle: Bundle.module)
+        #else
+        super.init(nibName: nil, bundle: resourceBundle)
+        #endif
 
         setupGestureRecognizer()
         setupView()

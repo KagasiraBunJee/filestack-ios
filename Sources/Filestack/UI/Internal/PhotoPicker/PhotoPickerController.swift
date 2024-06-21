@@ -91,7 +91,15 @@ class PhotoPickerController {
 
 private extension PhotoPickerController {
     func viewController(with name: String) -> UIViewController {
-        let storyboard = UIStoryboard(name: "PhotoPicker", bundle: bundle)
+        let frameworkBundle = Bundle(for: Self.self)
+        let bundleURL = frameworkBundle.resourceURL?.appendingPathComponent("Filestack.bundle")
+        let resourceBundle = Bundle(url: bundleURL!)
+
+        #if SWIFT_PACKAGE
+        let storyboard = UIStoryboard(name: "PhotoPicker", bundle: Bundle.module)
+        #else
+        let storyboard = UIStoryboard(name: "PhotoPicker", bundle: resourceBundle)
+        #endif
 
         return storyboard.instantiateViewController(withIdentifier: name)
     }
